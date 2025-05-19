@@ -1,12 +1,16 @@
 import type { FC } from "react";
 
 import iconAccountsHub from "@/assets/iconAccountsHub.svg";
+import imageEazyMock from "@/assets/images/eazyMock.webp";
 import { cn } from "@/utils/common";
 
 interface Product {
   id: string;
   name: string;
   icon: string;
+  description: string;
+  image?: string;
+  link?: string;
 }
 
 interface ProductSelectorProps {
@@ -20,31 +24,40 @@ const products: Product[] = [
     id: "eazymock",
     name: "EazyMock",
     icon: iconAccountsHub,
+    description:
+      "Mock APIs for seamless app development and comprehensive interactions",
+    image: imageEazyMock,
+    link: "https://eazymock.net/",
   },
   {
     id: "offwork",
     name: "Offwork",
     icon: iconAccountsHub,
+    description: "Manage your team and projects",
   },
   {
     id: "accountshub",
     name: "AccountsHub",
     icon: iconAccountsHub,
+    description: "Manage your accounts and projects",
   },
   {
     id: "recruithub",
     name: "RecruitHub",
     icon: iconAccountsHub,
+    description: "Manage your team and projects",
   },
   {
     id: "review360",
     name: "Review360",
     icon: iconAccountsHub,
+    description: "Manage your team and projects",
   },
   {
     id: "eazyprocess",
     name: "EazyProcess",
     icon: iconAccountsHub,
+    description: "Manage your team and projects",
   },
 ];
 
@@ -56,11 +69,12 @@ const ProductSelector: FC<ProductSelectorProps> = ({
   const selectedIndex = products.findIndex((p) => p.id === selectedProduct);
   const translateX = selectedIndex >= 0 ? `${selectedIndex * 100}%` : "0";
 
+  const selectedProductData = products[selectedIndex];
   return (
     <div className={cn("relative", className)}>
       <div
         className={cn(
-          "no-scrollbar relative h-24 overflow-x-auto border border-solid border-gray-180 bg-gray-130"
+          "no-scrollbar relative h-24 border border-solid border-gray-180 bg-gray-130"
         )}
       >
         <div
@@ -109,6 +123,59 @@ const ProductSelector: FC<ProductSelectorProps> = ({
               </div>
             </div>
           ))}
+        </div>
+      </div>
+      <div className={cn("relative")}>
+        <div className="mt-9">
+          <div className="flex flex-col items-center justify-center gap-4 md:flex-row">
+            {selectedProductData.link ? (
+              <a
+                href={selectedProductData.link}
+                className="flex gap-2.5"
+                target="_blank"
+                rel="external"
+              >
+                <img
+                  className="h-7 object-cover"
+                  alt={selectedProductData.name}
+                  loading="lazy"
+                  decoding="async"
+                  src={selectedProductData.icon}
+                />
+                <h4 className="text-xl font-bold text-gray-800">
+                  {selectedProductData.name}
+                </h4>
+              </a>
+            ) : (
+              <div className="flex gap-2.5">
+                <img
+                  className="h-7 object-cover"
+                  alt={selectedProductData.name}
+                  loading="lazy"
+                  decoding="async"
+                  src={selectedProductData.icon}
+                />
+                <h4 className="text-xl font-bold text-gray-800">
+                  {selectedProductData.name}
+                </h4>
+              </div>
+            )}
+            <span className="mx-6 hidden h-[1.8125rem] w-px bg-gray-500 md:block" />
+            <p className="text-center text-base text-gray-520 md:text-lg">
+              {selectedProductData.description}
+            </p>
+          </div>
+        </div>
+        <div className="mx-auto mt-6 w-full">
+          {selectedProductData.image && (
+            <img
+              className="aspect-[1.82] w-full object-cover"
+              src={selectedProductData.image}
+              alt={selectedProductData.name}
+              loading="lazy"
+              decoding="async"
+            />
+          )}
         </div>
       </div>
     </div>
